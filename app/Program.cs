@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace app
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine(args[0] + " " + args[1]);
+            var serverUrl = new Uri(args[0], UriKind.Absolute);
+            var playerKey = args[1];
+
+            Console.WriteLine($"ServerUrl: {serverUrl}; PlayerKey: {playerKey}");
+
+            using var httpClient = new HttpClient {BaseAddress = serverUrl};
+            using var responseMessage = await httpClient.GetAsync($"?playerKey={playerKey}");
+            responseMessage.EnsureSuccessStatusCode();
         }
     }
 }
