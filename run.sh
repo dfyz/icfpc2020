@@ -1,3 +1,3 @@
 #!/bin/sh
 cd ./build
-dotnet app.dll $@
+dotnet app.dll "$@"
