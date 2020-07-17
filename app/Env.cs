@@ -20,11 +20,21 @@ namespace app
             };
 
             var lines = programText.Split("\n");
+
+            // small cheat: put entries for all vars declared in program into globals beforehand
+            // this allows us to complain about unknown vars at compile time
+            foreach (var line in lines)
+            {
+                var tokens = Tokenize(line);
+                result.Globals.Add(tokens[0], null);
+            }
+
+
             foreach (var line in lines)
             {
                 var tokens = Tokenize(line);
                 var name = tokens[0];
-                if (name[0] != ':' || tokens[1] != "=")
+                if (tokens[1] != "=")
                 {
                     throw new Exception("Malformed input");
                 }
@@ -58,14 +68,6 @@ namespace app
                             Func = DoParse(),
                             Argument = DoParse(),
                         },
-                    string number when long.TryParse(number, out var numberValue) =>
-                        new Integer { Val = numberValue },
-                    string variable when variable[0] == ':' =>
-                        new Variable
-                        {
-                            Env = this,
-                            Name = variable,
-                        },
                     "cons" => Builtins.Cons.Instance,
                     "nil" => Builtins.Nil.Instance,
                     "isnil" => Builtins.IsNil.Instance,
@@ -83,6 +85,17 @@ namespace app
                     "mul" => Builtins.Mul.Instance,
                     "div" => Builtins.Div.Instance,
                     "add" => Builtins.Add.Instance,
+                    string number when long.TryParse(number, out var numberValue) =>
+                        new Integer { Val = numberValue },
+                    string variable =>
+                        // everything else is a varw
+                        new Variable
+                        {
+                            Env = this,
+                            Name = Globals.ContainsKey(variable)
+                                ? variable
+                                : throw new Exception($"Unknown variable: {variable}"),
+                        },
                     _ =>
                         throw new Exception($"Unknown token: {token}"),
                 };
