@@ -74,6 +74,20 @@ namespace Test
         }
 
         [Fact]
+        public void TestDiv() {
+            EvalAssert("2", "ap ap div 4 2");
+            EvalAssert("1", "ap ap div 4 3");
+            EvalAssert("1", "ap ap div 4 4");
+            EvalAssert("0", "ap ap div 4 5");
+            EvalAssert("2", "ap ap div 5 2");
+            EvalAssert("-3", "ap ap div 6 -2");
+            EvalAssert("-1", "ap ap div 5 -3");
+            EvalAssert("-1", "ap ap div -5 3");
+            EvalAssert("1", "ap ap div -5 -3");
+            EvalAssert("12345678", "ap ap div x0 1", "x0 = 12345678");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");
