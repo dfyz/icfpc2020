@@ -18,6 +18,19 @@ namespace Test
         }
 
         [Fact]
+        public void TestAp() {
+            EvalAssert("2", "ap inc ap inc 0");
+            EvalAssert("3", "ap inc ap inc ap inc 0");
+            /*EvalAssert("ap inc ap dec x0   =   x0
+            EvalAssert("ap dec ap inc x0   =   x0
+            EvalAssert("ap dec ap ap add x0 1   =   x0
+            EvalAssert("ap ap add ap ap add 2 3 4   =   9
+            EvalAssert("ap ap add 2 ap ap add 3 4   =   9
+            EvalAssert("ap ap add ap ap mul 2 3 4   =   10
+            EvalAssert("ap ap mul 2 ap ap add 3 4   =   14*/
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");
@@ -35,10 +48,13 @@ namespace Test
             EvalAssert("(0 (1 (2 (5 nil))))","( 0 , 1 , 2 , 5 )");
         }
 
-        private void EvalAssert(string expected, string program)
+        private void EvalAssert(string expected, params string[] program)
         {
             var env = new Env();
-            var result = env.Eval(program);
+            Value result = null;
+            foreach (var s in program) {
+                result = env.Eval(s);
+            }
             Assert.Equal(expected, result.ToString());
         }
     }
