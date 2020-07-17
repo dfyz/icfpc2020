@@ -67,9 +67,12 @@ namespace Test
             }
         }
 
+        [Fact]
         public void TestDemodulate()
         {
-            // TODO
+            foreach (var cs in Cases) {
+                Assert.Equal(ToBits(cs.Ans), Modem.Modulate(Modem.Demodulate(Modem.Modulate(cs.Val))));
+            }
         }
 
         private bool[] ToBits(string s) {

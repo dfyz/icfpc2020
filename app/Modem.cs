@@ -35,8 +35,8 @@ namespace app {
                     throw new ArgumentException("bits ended unexpectedly");
                 }
 
-                var b0 = bits[0];
-                var b1 = bits[1];
+                var b0 = bits[cursor];
+                var b1 = bits[cursor + 1];
 
                 if (b0 == b1) {
                     if (b0) {
@@ -112,21 +112,23 @@ namespace app {
                 ++widthInNibbles;
                 ++cursor;
             }
-
-            var realLength = widthInNibbles * 4;
-            var lastBit = cursor + realLength;
-            if (lastBit >= bits.Length) {
-                throw new ArgumentException($"The number is expected to have exactly {widthInNibbles} nibbles");
+            if (cursor >= bits.Length) {
+                throw new ArgumentException("the width in nibbles is expected to end with a zero");
             }
+            ++cursor;
 
             var result = 0L;
-            for (var idx = lastBit; idx >= cursor; --idx) {
-                if (bits[idx]) {
-                    result |= 1;
+            var realLength = widthInNibbles * 4;
+            for (var idx = 0; idx < realLength; ++idx) {
+                if (cursor >= bits.Length) {
+                    throw new ArgumentException($"The number is expected to have exactly {widthInNibbles} nibbles");
                 }
-                result <<= 1;
+                result = (result * 2) + (bits[cursor] ? 1 : 0);
+                ++cursor;
             }
-            cursor = lastBit + 1;
+            if (isNegative) {
+                result = -result;
+            }
             return result;
         }
     }
