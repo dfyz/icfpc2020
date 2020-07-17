@@ -27,6 +27,8 @@ namespace app
     {
         public Value First { get; set; }
         public Value Second { get; set; }
+
+        public override string ToString() => $"({First} {Second})";
     }
 
     public class Variable : Value
@@ -76,6 +78,8 @@ namespace app
             private Nil()
             {
             }
+
+            public override string ToString() => "nil";
         }
 
         public class IsNil : Func1Value<IsNil>

@@ -16,6 +16,16 @@ namespace Test
             EvalAssert("-6", "ap ap mul 3 -2");
         }
 
+        [Fact]
+        public void TestList()
+        {
+            EvalAssert("nil", "( )");
+            EvalAssert("(0 nil)", "( 0 )");
+            EvalAssert("(0 (1 nil))", "( 0 , 1 )");
+            EvalAssert("(0 (1 (2 nil)))", "( 0 , 1 , 2 )");
+            EvalAssert("(0 (1 (2 (5 nil))))","( 0 , 1 , 2 , 5 )");
+        }
+
         private void EvalAssert(string expected, string program)
         {
             var env = new Env();
