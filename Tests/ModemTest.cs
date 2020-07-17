@@ -7,20 +7,69 @@ namespace Test
 {
     public class ModemTest
     {
+        class TestCase {
+            public string Ans { get; set; }
+            public Value Val { get; set; }
+        };
+
+        TestCase[] Cases = new[] {
+            new TestCase{Ans = "010", Val = new Integer{Val = 0}},
+            new TestCase{Ans = "01100001", Val = new Integer{Val = 1}},
+            new TestCase{Ans = "10100001", Val = new Integer{Val = -1}},
+            new TestCase{Ans = "01100010", Val = new Integer{Val = 2}},
+            new TestCase{Ans = "10100010", Val = new Integer{Val = -2}},
+            new TestCase{Ans = "0111000010000", Val = new Integer{Val = 16}},
+            new TestCase{Ans = "1011000010000", Val = new Integer{Val = -16}},
+            new TestCase{Ans = "0111011111111", Val = new Integer{Val = 255}},
+            new TestCase{Ans = "1011011111111", Val = new Integer{Val = -255}},
+            new TestCase{Ans = "011110000100000000", Val = new Integer{Val = 256}},
+            new TestCase{Ans = "101110000100000000", Val = new Integer{Val = -256}},
+            new TestCase{Ans = "00", Val = Nil.Instance},
+            new TestCase{Ans = "110000", Val = new Pair {First = Nil.Instance, Second = Nil.Instance,}},
+            new TestCase{Ans = "1101000", Val = new Pair {
+                First = new Integer{Val = 0},
+                Second = Nil.Instance,
+            }},
+            new TestCase{Ans = "110110000101100010", Val = new Pair {
+                First = new Integer{Val = 1},
+                Second = new Integer{Val = 2},
+            }},
+            new TestCase{Ans = "1101100001110110001000", Val = new Pair {
+                First = new Integer{Val = 1},
+                Second = new Pair {
+                    First = new Integer{Val = 2},
+                    Second = Nil.Instance,
+                },
+            }},
+            new TestCase{Ans = "1101100001111101100010110110001100110110010000", Val = new Pair {
+                First = new Integer{Val = 1},
+                Second = new Pair {
+                    First = new Pair {
+                        First = new Integer{Val = 2},
+                        Second = new Pair {
+                            First = new Integer{Val = 3},
+                            Second = Nil.Instance,
+                        },
+                    },
+                    Second = new Pair {
+                        First = new Integer{Val = 4},
+                        Second = Nil.Instance,
+                    },
+                },
+            }}
+        };
+
         [Fact]
         public void TestModulate()
         {
-            Assert.Equal(ToBits("010"), Modem.Modulate(new Integer{Val = 0}));
-            Assert.Equal(ToBits("01100001"), Modem.Modulate(new Integer{Val = 1}));
-            Assert.Equal(ToBits("10100001"), Modem.Modulate(new Integer{Val = -1}));
-            Assert.Equal(ToBits("01100010"), Modem.Modulate(new Integer{Val = 2}));
-            Assert.Equal(ToBits("10100010"), Modem.Modulate(new Integer{Val = -2}));
-            Assert.Equal(ToBits("0111000010000"), Modem.Modulate(new Integer{Val = 16}));
-            Assert.Equal(ToBits("1011000010000"), Modem.Modulate(new Integer{Val = -16}));
-            Assert.Equal(ToBits("0111011111111"), Modem.Modulate(new Integer{Val = 255}));
-            Assert.Equal(ToBits("1011011111111"), Modem.Modulate(new Integer{Val = -255}));
-            Assert.Equal(ToBits("011110000100000000"), Modem.Modulate(new Integer{Val = 256}));
-            Assert.Equal(ToBits("101110000100000000"), Modem.Modulate(new Integer{Val = -256}));
+            foreach (var cs in Cases) {
+                Assert.Equal(ToBits(cs.Ans), Modem.Modulate(cs.Val));
+            }
+        }
+
+        public void TestDemodulate()
+        {
+            // TODO
         }
 
         private bool[] ToBits(string s) {

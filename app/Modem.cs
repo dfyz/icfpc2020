@@ -8,7 +8,7 @@ namespace app {
             var bits = new List<bool>();
             while (stack.Count > 0) {
                 var topValue = stack.Pop();
-                switch (value) {
+                switch (topValue) {
                     case Nil nil:
                         bits.AddRange(new[] {false, false});
                         break;
@@ -21,7 +21,7 @@ namespace app {
                         stack.Push(pair.First);
                         break;
                     default:
-                        throw new Exception($"can't modulate {value}");
+                        throw new Exception($"can't modulate {topValue}");
                 }
             }
             return bits.ToArray();
@@ -44,9 +44,11 @@ namespace app {
                     } else {
                         instructions.Add(Nil.Instance);
                     }
+                    cursor += 2;
                 } else {
-                    instructions.Add(new Integer {Val = DemodulateInteger(bits, cursor)});
+                    instructions.Add(new Integer {Val = DemodulateInteger(bits, ref cursor)});
                 }
+
             }
 
             var stack = new Stack<Value>();
@@ -94,7 +96,7 @@ namespace app {
             bits.AddRange(tmpBits);
         }
 
-        private static long DemodulateInteger(bool[] bits, int cursor) {
+        private static long DemodulateInteger(bool[] bits, ref int cursor) {
             if (bits.Length < 3) {
                 throw new ArgumentException("bits is expected to have at least 3 elements");
             }
@@ -111,18 +113,20 @@ namespace app {
                 ++cursor;
             }
 
-            var realLength = bits.Length - cursor;
-            if (realLength != widthInNibbles * 4) {
+            var realLength = widthInNibbles * 4;
+            var lastBit = cursor + realLength;
+            if (lastBit >= bits.Length) {
                 throw new ArgumentException($"The number is expected to have exactly {widthInNibbles} nibbles");
             }
 
             var result = 0L;
-            for (var idx = bits.Length - 1; idx >= cursor; --idx) {
+            for (var idx = lastBit; idx >= cursor; --idx) {
                 if (bits[idx]) {
                     result |= 1;
                 }
                 result <<= 1;
             }
+            cursor = lastBit + 1;
             return result;
         }
     }
