@@ -69,6 +69,9 @@ namespace app
                     "cons" => Builtins.Cons.Instance,
                     "nil" => Builtins.Nil.Instance,
                     "neg" => Builtins.Neg.Instance,
+                    "c" => Builtins.C.Instance,
+                    "b" => Builtins.B.Instance,
+                    "s" => Builtins.S.Instance,
                     _ =>
                         throw new Exception($"Unknown token: {token}"),
                 };
