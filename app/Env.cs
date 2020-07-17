@@ -67,7 +67,7 @@ namespace app
                             Name = variable,
                         },
                     _ =>
-                        throw new Exception("Unknown token: ${token}"),
+                        throw new Exception($"Unknown token: {token}"),
                 };
             }
         }
