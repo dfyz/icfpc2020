@@ -6,10 +6,19 @@ namespace app
 {
     public class Env
     {
-        public Dictionary<string, Value> Globals { get; set; }
+        public Dictionary<string, Value> Globals { get; private set; }
 
-        public void Load(string programText)
+        private Env()
         {
+        }
+
+        public static Env Load(string programText)
+        {
+            var result = new Env()
+            {
+                Globals = new Dictionary<string, Value>(),
+            };
+
             var lines = programText.Split("\n");
             foreach (var line in lines)
             {
@@ -19,7 +28,12 @@ namespace app
                 {
                     throw new Exception("Malformed input");
                 }
+
+                var value = result.Parse(tokens, 2);
+                result.Globals[name] = value;
             }
+
+            return result;
         }
 
         public Value Eval(string expression)
@@ -35,11 +49,30 @@ namespace app
 
             Value DoParse()
             {
-                return null;
+                var token = expr[index++];
+                return token switch
+                {
+                    "ap" =>
+                        new Application
+                        {
+                            Func = DoParse(),
+                            Argument = DoParse(),
+                        },
+                    string number when long.TryParse(number, out var numberValue) =>
+                        new Integer { Val = numberValue },
+                    string variable when variable[0] == ':' =>
+                        new Variable
+                        {
+                            Env = this,
+                            Name = variable,
+                        },
+                    _ =>
+                        throw new Exception("Unknown token: ${token}"),
+                };
             }
         }
 
-        private string[] Tokenize(string line)
+        private static string[] Tokenize(string line)
         {
             return line.Split(' ');
         }

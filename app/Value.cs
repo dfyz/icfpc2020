@@ -42,7 +42,7 @@ namespace app
         public string Name { get; set; }
         public Env Env { get; set; }
 
-        public Value Force()
+        public override Value Force()
         {
             if (value == null)
             {
