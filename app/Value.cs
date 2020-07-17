@@ -76,6 +76,20 @@ namespace app
             }
         }
 
+        public class IsNil : Func1Value<IsNil>
+        {
+            public override Value Apply(Value arg) =>
+                arg.Force() == Value.Nil
+                    ? (Value)T.Instance
+                    : F.Instance;
+        }
+
+        public abstract class Func1Value<TFunc> : FuncValue
+            where TFunc : Func1Value<TFunc>, new()
+        {
+            public static TFunc Instance => new TFunc();
+        }
+
         public abstract class Func2Value<TFunc> : FuncValue
             where TFunc : Func2Value<TFunc>, new()
         {
@@ -125,10 +139,8 @@ namespace app
                 new Pair { First = x0, Second = x1 };
         }
 
-        public class Neg : FuncValue
+        public class Neg : Func1Value<Neg>
         {
-            public static Neg Instance => new Neg();
-
             public override Value Apply(Value argument) =>
                 new Integer { Val = -((Integer)argument.Force()).Val };
         }
@@ -161,6 +173,70 @@ namespace app
                     Func = new Application { Func = x0, Argument = x2 },
                     Argument = new Application { Func = x1, Argument = x2 },
                 };
+        }
+
+        public class I : Func1Value<I>
+        {
+            public override Value Apply(Value x0) => x0;
+        }
+
+        // t, true, K-combinator
+        public class T : Func2Value<T>
+        {
+            protected override Value Apply(Value x0, Value x1) => x0;
+        }
+
+        // f, false
+        public class F : Func2Value<F>
+        {
+            protected override Value Apply(Value x0, Value x1) => x1;
+        }
+
+        public class Car : Func1Value<Car>
+        {
+            public override Value Apply(Value pair) =>
+                ((Pair)pair).First;
+        }
+
+        public class Cdr : Func1Value<Cdr>
+        {
+            public override Value Apply(Value pair) =>
+                ((Pair)pair).Second;
+        }
+
+        public class Eq : Func2Value<Eq>
+        {
+            protected override Value Apply(Value x0, Value x1) =>
+                ((Integer) x0).Val == ((Integer) x1).Val
+                    ? (Value) T.Instance
+                    : F.Instance;
+        }
+
+        public class Lt : Func2Value<Lt>
+        {
+            protected override Value Apply(Value x0, Value x1) =>
+                ((Integer) x0).Val < ((Integer) x1).Val
+                    ? (Value) T.Instance
+                    : F.Instance;
+        }
+
+        public class Mul : Func2Value<Mul>
+        {
+            protected override Value Apply(Value x0, Value x1) =>
+                new Integer { Val = checked(((Integer) x0).Val * ((Integer) x1).Val) };
+        }
+
+        public class Div : Func2Value<Div>
+        {
+            // div by zero?
+            protected override Value Apply(Value x0, Value x1) =>
+                new Integer { Val = checked(((Integer) x0).Val / ((Integer) x1).Val) };
+        }
+
+        public class Add : Func2Value<Add>
+        {
+            protected override Value Apply(Value x0, Value x1) =>
+                new Integer { Val = checked(((Integer) x0).Val + ((Integer) x1).Val) };
         }
     }
 }
