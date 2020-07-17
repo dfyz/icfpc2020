@@ -79,6 +79,7 @@ namespace app
                     "add" => Builtins.Add.Instance,
                     string number when long.TryParse(number, out var numberValue) =>
                         new Integer { Val = numberValue },
+                    "(" => ParseList(),
                     string variable =>
                         // everything else is a varw
                         new Variable
@@ -91,6 +92,28 @@ namespace app
                     _ =>
                         throw new Exception($"Unknown token: {token}"),
                 };
+            }
+
+            Value ParseList()
+            {
+                var head = new Pair();
+                var current = head;
+                while (expr[index] != ")")
+                {
+                    var next = new Pair { First = DoParse() };
+                    current.Second = next;
+                    current = next;
+
+                    // hacky
+                    if (expr[index] == ",")
+                    {
+                        ++index;
+                    }
+                }
+
+                ++index;
+                current.Second = Value.Nil;
+                return head.Second;
             }
         }
 
