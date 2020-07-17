@@ -6,8 +6,12 @@ namespace app
 {
     public abstract class Value
     {
-        public virtual Value Apply(Value val) =>
-            throw new InvalidOperationException();
+        public virtual Value Force(Program program) => this;
+    }
+
+    public abstract class FuncValue : Value
+    {
+        public abstract Value Apply(Value argument);
     }
 
     public class Integer : Value
@@ -21,13 +25,34 @@ namespace app
         public Value Second { get; set; }
     }
 
-    public class UserFunc : Value
+    public class Variable : Value
     {
+        // TODO(lazy): switch to integer if strings are too slow
+        public string Name { get; set; }
 
+        public Value Force(Program program) => throw new NotImplementedException();
     }
 
-    public static class BulitinFunctions
+    public class Application : Value
     {
-        
+        private Value result;
+
+        public FuncValue Func { get; set; }
+        public Value Argument { get; set; }
+
+        public override Value Force(Program program)
+        {
+            if (result == null)
+            {
+                result = Func.Apply(Argument);
+            }
+
+            return result;
+        }
+    }
+
+    public static class BulitinVariables
+    {
+
     }
 }

@@ -6,5 +6,6 @@ namespace app
 {
     public class Program
     {
+        public Dictionary<string, Value> Definitions;
     }
 }
