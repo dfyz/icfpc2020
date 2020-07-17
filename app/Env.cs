@@ -66,6 +66,9 @@ namespace app
                             Env = this,
                             Name = variable,
                         },
+                    "cons" => Builtins.Cons.Instance,
+                    "nil" => Builtins.Nil.Instance,
+                    "neg" => Builtins.Neg.Instance,
                     _ =>
                         throw new Exception($"Unknown token: {token}"),
                 };
