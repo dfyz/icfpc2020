@@ -9,7 +9,7 @@ namespace app {
             while (stack.Count > 0) {
                 var topValue = stack.Pop();
                 switch (topValue) {
-                    case Nil nil:
+                    case Builtins.Nil nil:
                         bits.AddRange(new[] {false, false});
                         break;
                     case Integer integer:
@@ -42,7 +42,7 @@ namespace app {
                     if (b0) {
                         instructions.Add(new Pair());
                     } else {
-                        instructions.Add(Nil.Instance);
+                        instructions.Add(Builtins.Nil.Instance);
                     }
                     cursor += 2;
                 } else {

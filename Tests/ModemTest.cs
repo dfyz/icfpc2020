@@ -24,11 +24,11 @@ namespace Test
             new TestCase{Ans = "1011011111111", Val = new Integer{Val = -255}},
             new TestCase{Ans = "011110000100000000", Val = new Integer{Val = 256}},
             new TestCase{Ans = "101110000100000000", Val = new Integer{Val = -256}},
-            new TestCase{Ans = "00", Val = Nil.Instance},
-            new TestCase{Ans = "110000", Val = new Pair {First = Nil.Instance, Second = Nil.Instance,}},
+            new TestCase{Ans = "00", Val = Builtins.Nil.Instance},
+            new TestCase{Ans = "110000", Val = new Pair {First = Builtins.Nil.Instance, Second = Builtins.Nil.Instance,}},
             new TestCase{Ans = "1101000", Val = new Pair {
                 First = new Integer{Val = 0},
-                Second = Nil.Instance,
+                Second = Builtins.Nil.Instance,
             }},
             new TestCase{Ans = "110110000101100010", Val = new Pair {
                 First = new Integer{Val = 1},
@@ -38,7 +38,7 @@ namespace Test
                 First = new Integer{Val = 1},
                 Second = new Pair {
                     First = new Integer{Val = 2},
-                    Second = Nil.Instance,
+                    Second = Builtins.Nil.Instance,
                 },
             }},
             new TestCase{Ans = "1101100001111101100010110110001100110110010000", Val = new Pair {
@@ -48,12 +48,12 @@ namespace Test
                         First = new Integer{Val = 2},
                         Second = new Pair {
                             First = new Integer{Val = 3},
-                            Second = Nil.Instance,
+                            Second = Builtins.Nil.Instance,
                         },
                     },
                     Second = new Pair {
                         First = new Integer{Val = 4},
-                        Second = Nil.Instance,
+                        Second = Builtins.Nil.Instance,
                     },
                 },
             }}
