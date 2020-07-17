@@ -6,7 +6,7 @@ namespace app
 {
     public abstract class Value
     {
-        public virtual Value Force(Env env) => this;
+        public virtual Value Force() => this;
     }
 
     public abstract class FuncValue : Value
@@ -25,12 +25,32 @@ namespace app
         public Value Second { get; set; }
     }
 
+    public class Nil : Value
+    {
+        public static Nil Instance => new Nil();
+
+        private Nil()
+        {
+        }
+    }
+
     public class Variable : Value
     {
+        private Value value;
+
         // TODO(lazy): switch to integer if strings are too slow
         public string Name { get; set; }
+        public Env Env { get; set; }
 
-        public Value Force(Env env) => env.Globals[Name].Force(env);
+        public Value Force()
+        {
+            if (value == null)
+            {
+                value = Env.Globals[Name].Force();
+            }
+
+            return value;
+        }
     }
 
     public class Application : Value
@@ -40,11 +60,11 @@ namespace app
         public Value Func { get; set; }
         public Value Argument { get; set; }
 
-        public override Value Force(Env env)
+        public override Value Force()
         {
             if (result == null)
             {
-                var func = (FuncValue)Func.Force(env);
+                var func = (FuncValue)Func.Force();
                 result = func.Apply(Argument);
             }
 
