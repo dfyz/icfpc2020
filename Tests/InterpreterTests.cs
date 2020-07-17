@@ -30,8 +30,8 @@ namespace Test
             EvalAssert("42", "ap dec ap inc x0", "x0 = 42");
             EvalAssert("42", "ap dec ap ap add x0 1", "x0 = 42");
 
-            // TODO: investigate
             EvalAssert("43", "ap inc' 42", "inc' = ap add 1");
+            EvalAssert("41", "ap dec' 42", "dec' = ap add ap neg 1");
         }
 
         [Fact]
