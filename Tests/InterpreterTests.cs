@@ -35,6 +35,19 @@ namespace Test
         }
 
         [Fact]
+        public void TestB()
+        {
+            EvalAssert("42", "ap ap ap b inc dec x0", "x0 = 42");
+        }
+
+        [Fact]
+        public void TestC()
+        {
+            EvalAssert("3", "ap ap ap c add 1 2");
+            EvalAssert("8", "ap ap ap c div 10 88");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");
