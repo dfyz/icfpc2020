@@ -6,6 +6,8 @@ namespace app
 {
     public abstract class Value
     {
+        public static Value Nil => Builtins.Nil.Instance;
+
         public virtual Value Force() => this;
     }
 
@@ -25,15 +27,6 @@ namespace app
         public Value Second { get; set; }
     }
 
-    public class Nil : Value
-    {
-        public static Nil Instance => new Nil();
-
-        private Nil()
-        {
-        }
-    }
-
     public class Variable : Value
     {
         private Value value;
@@ -42,7 +35,7 @@ namespace app
         public string Name { get; set; }
         public Env Env { get; set; }
 
-        public Value Force()
+        public override Value Force()
         {
             if (value == null)
             {
@@ -72,8 +65,46 @@ namespace app
         }
     }
 
-    public static class Bulitins
+    public static class Builtins
     {
+        public class Nil : Value
+        {
+            public static Nil Instance => new Nil();
 
+            private Nil()
+            {
+            }
+        }
+
+        public class Cons : FuncValue
+        {
+            public static Cons Instance => new Cons();
+
+            public override Value Apply(Value argument) =>
+                new Cons1 { First = argument };
+
+            private class Cons1 : FuncValue
+            {
+                public Value First { get; set; }
+
+                public override Value Apply(Value argument) =>
+                    new Pair
+                    {
+                        First = this.First,
+                        Second = argument,
+                    };
+            }
+        }
+
+        public class Neg : FuncValue
+        {
+            public static Neg Instance => new Neg();
+
+            public override Value Apply(Value argument) =>
+                new Integer
+                {
+                    Val = -((Integer)argument.Force()).Val,
+                };
+        }
     }
 }
