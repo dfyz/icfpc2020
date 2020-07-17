@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
+#nullable enable
 
 namespace app
 {
@@ -19,6 +19,8 @@ namespace app
     public class Integer : Value
     {
         public long Val { get; set; }
+
+        public override string ToString() => Val.ToString();
     }
 
     public class Pair : Value

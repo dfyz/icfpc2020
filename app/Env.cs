@@ -1,24 +1,17 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace app
 {
     public class Env
     {
-        public Dictionary<string, Value> Globals { get; private set; }
-
-        private Env()
-        {
-        }
+        public Dictionary<string, Value> Globals { get; } = new Dictionary<string, Value>();
 
         public static Env Load(string programText)
         {
-            var result = new Env()
-            {
-                Globals = new Dictionary<string, Value>(),
-            };
-
+            var result = new Env();
             var lines = programText.Split("\n");
 
             // small cheat: put entries for all vars declared in program into globals beforehand
@@ -26,9 +19,8 @@ namespace app
             foreach (var line in lines)
             {
                 var tokens = Tokenize(line);
-                result.Globals.Add(tokens[0], null);
+                result.Globals.Add(tokens[0], Value.Nil);
             }
-
 
             foreach (var line in lines)
             {
