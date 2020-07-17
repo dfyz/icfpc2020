@@ -57,8 +57,8 @@ namespace Test
         public void TestCheckerBoard()
         {
             var env = Env.Load("checkerboard = ap ap s ap ap b s ap ap c ap ap b c ap ap b ap c ap c ap ap s ap ap b s ap ap b ap b ap ap s i i lt eq ap ap s mul i nil ap ap s ap ap b s ap ap b ap b cons ap ap s ap ap b s ap ap b ap b cons ap c div ap c ap ap s ap ap b b ap ap c ap ap b b add neg ap ap b ap s mul div ap ap c ap ap b b checkerboard ap ap c add 2");
-            var res7 = env.Eval("ap ap checkerboard 7 0");
-            Assert.Equal("hi", res7.ToString());
+            //var res7 = env.Eval("ap ap checkerboard 7 0");
+            //Assert.Equal("hi", res7.ToString());
         }
 
 
