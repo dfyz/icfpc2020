@@ -244,5 +244,17 @@ namespace app
             protected override Value Apply(Value x0, Value x1) =>
                 new Integer { Val = checked(((Integer) x0).Val + ((Integer) x1).Val) };
         }
+
+        public class Inc : Func1Value<Inc>
+        {
+            public override Value Apply(Value x) =>
+                new Integer { Val = checked(((Integer) x).Val + 1) };
+        }
+
+        public class Dec : Func1Value<Dec>
+        {
+            public override Value Apply(Value x) =>
+                new Integer { Val = checked(((Integer) x).Val - 1) };
+        }
     }
 }

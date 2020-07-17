@@ -77,6 +77,8 @@ namespace app
                     "mul" => Builtins.Mul.Instance,
                     "div" => Builtins.Div.Instance,
                     "add" => Builtins.Add.Instance,
+                    "inc" => Builtins.Inc.Instance,
+                    "dec" => Builtins.Dec.Instance,
                     string number when long.TryParse(number, out var numberValue) =>
                         new Integer { Val = numberValue },
                     "(" => ParseList(),
