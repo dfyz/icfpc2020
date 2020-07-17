@@ -12,7 +12,7 @@ namespace app
         public static Env Load(string programText)
         {
             var result = new Env();
-            var lines = programText.Split("\n");
+            var lines = programText.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             // small cheat: put entries for all vars declared in program into globals beforehand
             // this allows us to complain about unknown vars at compile time
