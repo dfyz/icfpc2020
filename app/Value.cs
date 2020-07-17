@@ -69,7 +69,7 @@ namespace app
         }
     }
 
-    // A very hacky way to reprent board. It exists in one instance per env and is mutated
+    // A very hacky way to represent board.
     public class Board : Value
     {
         public bool[,] Pixels { get; set; } = new bool[20, 20];
