@@ -67,6 +67,13 @@ namespace Test
         }
 
         [Fact]
+        public void TestCons()
+        {
+            EvalAssert("42", "ap ap ap cons 42 nil t");
+            EvalAssert("nil", "ap ap ap cons 42 nil f");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");
