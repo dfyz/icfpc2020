@@ -28,7 +28,7 @@ namespace app
         public Value First { get; set; }
         public Value Second { get; set; }
 
-        public override string ToString() => $"({First} {Second})";
+        public override string ToString() => $"({First.Force()} {Second.Force()})";
     }
 
     public class Variable : Value
@@ -61,21 +61,19 @@ namespace app
         {
             if (result == null)
             {
-                for (;;)
-                {
-                    if (Func is FuncValue func)
-                    {
-                        result = func.Apply(Argument);
-                        break;
-                    }
-
-                    Func = Func.Force();
-                }
+                var func = (FuncValue)Func.Force();
+                result = func.Apply(Argument).Force();
             }
 
             return result;
         }
     }
+
+    // A very hacky way to reprent board. It exists in one instance per env and is mutated
+    public class Board : Value
+    {
+        public bool[,] Pixels { get; set; } = new bool[20, 20];
+    };
 
     public static class Builtins
     {
