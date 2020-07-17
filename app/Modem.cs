@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 
 namespace app {
-    static class Modem {
-        static bool[] Modulate(Value value) {
+    public static class Modem {
+        public static bool[] Modulate(Value value) {
             var stack = new Stack<Value>(new[] {value});
             var bits = new List<bool>();
             while (stack.Count > 0) {
@@ -27,7 +27,7 @@ namespace app {
             return bits.ToArray();
         }
 
-        static Value Demodulate(bool[] bits) {
+        public static Value Demodulate(bool[] bits) {
             var instructions = new List<Value>();
             var cursor = 0;
             while (cursor < bits.Length) {
@@ -72,25 +72,26 @@ namespace app {
         }
 
         private static void ModulateInteger(long num, List<bool> bits) {
-            var result = new List<bool>(num >= 0 ? new[] {false, true} : new[] {true, false});
+            bits.AddRange(num >= 0 ? new[] {false, true} : new[] {true, false});
             num = Math.Abs(num);
 
+            var tmpBits = new List<bool>();
             while (num > 0) {
-                bits.Add((num & 1) != 0);
+                tmpBits.Add((num & 1) != 0);
                 num >>= 1;
             }
-            while (bits.Count % 4 != 0) {
-                bits.Add(false);
+            while (tmpBits.Count % 4 != 0) {
+                tmpBits.Add(false);
             }
-            bits.Reverse();
+            tmpBits.Reverse();
 
-            var widthInNibbles = bits.Count / 4;
+            var widthInNibbles = tmpBits.Count / 4;
             for (var idx = 0; idx < widthInNibbles; ++idx) {
-                result.Add(true);
+                bits.Add(true);
             }
-            result.Add(false);
+            bits.Add(false);
 
-            result.AddRange(bits);
+            bits.AddRange(tmpBits);
         }
 
         private static long DemodulateInteger(bool[] bits, int cursor) {
