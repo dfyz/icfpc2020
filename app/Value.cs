@@ -201,19 +201,19 @@ namespace app
         public class Car : Func1Value<Car>
         {
             public override Value Apply(Value pair) =>
-                ((Pair)pair).First;
+                ((Pair)pair.Force()).First;
         }
 
         public class Cdr : Func1Value<Cdr>
         {
             public override Value Apply(Value pair) =>
-                ((Pair)pair).Second;
+                ((Pair)pair.Force()).Second;
         }
 
         public class Eq : Func2Value<Eq>
         {
             protected override Value Apply(Value x0, Value x1) =>
-                ((Integer) x0).Val == ((Integer) x1).Val
+                ((Integer) x0.Force()).Val == ((Integer) x1.Force()).Val
                     ? (Value) T.Instance
                     : F.Instance;
         }
@@ -221,7 +221,7 @@ namespace app
         public class Lt : Func2Value<Lt>
         {
             protected override Value Apply(Value x0, Value x1) =>
-                ((Integer) x0).Val < ((Integer) x1).Val
+                ((Integer) x0.Force()).Val < ((Integer) x1.Force()).Val
                     ? (Value) T.Instance
                     : F.Instance;
         }
@@ -229,32 +229,32 @@ namespace app
         public class Mul : Func2Value<Mul>
         {
             protected override Value Apply(Value x0, Value x1) =>
-                new Integer { Val = checked(((Integer) x0).Val * ((Integer) x1).Val) };
+                new Integer { Val = checked(((Integer) x0.Force()).Val * ((Integer) x1.Force()).Val) };
         }
 
         public class Div : Func2Value<Div>
         {
             // div by zero?
             protected override Value Apply(Value x0, Value x1) =>
-                new Integer { Val = checked(((Integer) x0).Val / ((Integer) x1).Val) };
+                new Integer { Val = checked(((Integer) x0.Force()).Val / ((Integer) x1.Force()).Val) };
         }
 
         public class Add : Func2Value<Add>
         {
             protected override Value Apply(Value x0, Value x1) =>
-                new Integer { Val = checked(((Integer) x0).Val + ((Integer) x1).Val) };
+                new Integer { Val = checked(((Integer) x0.Force()).Val + ((Integer) x1.Force()).Val) };
         }
 
         public class Inc : Func1Value<Inc>
         {
             public override Value Apply(Value x) =>
-                new Integer { Val = checked(((Integer) x).Val + 1) };
+                new Integer { Val = checked(((Integer) x.Force()).Val + 1) };
         }
 
         public class Dec : Func1Value<Dec>
         {
             public override Value Apply(Value x) =>
-                new Integer { Val = checked(((Integer) x).Val - 1) };
+                new Integer { Val = checked(((Integer) x.Force()).Val - 1) };
         }
     }
 }
