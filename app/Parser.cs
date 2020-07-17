@@ -4,7 +4,7 @@ using System.Text;
 
 namespace app
 {
-    public class Program
+    class Parser
     {
     }
 }
