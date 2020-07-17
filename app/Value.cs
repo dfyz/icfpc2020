@@ -61,8 +61,16 @@ namespace app
         {
             if (result == null)
             {
-                var func = (FuncValue)Func.Force();
-                result = func.Apply(Argument);
+                for (;;)
+                {
+                    if (Func is FuncValue func)
+                    {
+                        result = func.Apply(Argument);
+                        break;
+                    }
+
+                    Func = Func.Force();
+                }
             }
 
             return result;
