@@ -47,6 +47,17 @@ namespace Test
             EvalAssert("8", "ap ap ap c div 10 88");
         }
 
+
+        [Fact]
+        public void TestCar()
+        {
+            EvalAssert("42", "ap car ap ap cons x0 x1", "x0 = 42", "x1 = nil");
+            EvalAssert("42", "ap car ap ap cons x0 x1", "x0 = 42", "x1 = nil");
+
+            EvalAssert("42", "ap car x2", "x2 = ap ap cons 42 nil");
+            EvalAssert("42", "ap x2 t", "x2 = ap ap cons 42 nil");
+        }
+
         [Fact]
         public void TestMul()
         {
