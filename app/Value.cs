@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 #nullable enable
 
@@ -82,7 +83,35 @@ namespace app
     public class Board : Value
     {
         public bool[,] Pixels { get; set; } = new bool[20, 20];
-    };
+
+        public Board(Value val)
+        {
+            while(val != Value.Nil)
+            {
+                var v = (Pair) val;
+                var point = (Pair) v.First.Force();
+                    
+                var x = ((Integer) point.First.Force()).Val;
+                var y = ((Integer) point.Second.Force()).Val;
+                Pixels[x, y] = true;
+                
+                val = v.Second.Force();
+                Console.WriteLine(val);
+            }
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder(30 * 30);
+            for(var i = 0; i < Pixels.GetLength(0); i++)
+            {
+                for(var j = 0; j < Pixels.GetLength(1); j++)
+                    sb.Append(Pixels[i, j] ? "#" : ".");
+                sb.Append("\n");
+            }
+            return sb.ToString();
+        }
+    }
 
     public static class Builtins
     {
@@ -274,6 +303,11 @@ namespace app
         {
             public override Value Apply(Value x) =>
                 new Integer { Val = checked(((Integer) x.Force()).Val - 1) };
+        }
+
+        public class Draw : Func1Value<Draw>
+        {
+            public override Value Apply(Value x) => new Board(x);
         }
     }
 }

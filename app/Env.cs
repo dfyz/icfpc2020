@@ -61,6 +61,7 @@ namespace app
                             Argument = DoParse(),
                         },
                     "cons" => Builtins.Cons.Instance,
+                    "vec" => Builtins.Cons.Instance,
                     "nil" => Builtins.Nil.Instance,
                     "isnil" => Builtins.IsNil.Instance,
                     "neg" => Builtins.Neg.Instance,
@@ -79,6 +80,7 @@ namespace app
                     "add" => Builtins.Add.Instance,
                     "inc" => Builtins.Inc.Instance,
                     "dec" => Builtins.Dec.Instance,
+                    "draw" => Builtins.Draw.Instance,
                     string number when long.TryParse(number, out var numberValue) =>
                         new Integer { Val = numberValue },
                     "(" => ParseList(),
