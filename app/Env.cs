@@ -85,7 +85,7 @@ namespace app
                         new Integer { Val = numberValue },
                     "(" => ParseList(),
                     string variable =>
-                        // everything else is a varw
+                        // everything else is a variable
                         new Variable
                         {
                             Env = this,
