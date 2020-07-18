@@ -81,7 +81,7 @@ namespace app
         public class Neg : Func1Value<Neg>
         {
             public override Value Apply(Value argument) =>
-                new Integer { Val = -((Integer)argument.Force()).Val };
+                new Integer { Val = checked(-((Integer)argument.Force()).Val) };
         }
 
         public class C : Func3Value<C>
@@ -227,18 +227,12 @@ namespace app
             }
         }
 
-        public class Interact : Func1Value<Interact>
+        public class Interact : Func3Value<Interact>
         {
-            public override Value Apply(Value protocol)
+            protected override Value Apply(Value protocol, Value state, Value vector)
             {
                 long flag = 1;
-                var state = Value.Nil;
                 Value data = Value.Nil;
-                Value vector = new Pair
-                {
-                    First = new Integer { Val = 0},
-                    Second = new Integer { Val = 0 },
-                };
 
                 while (flag != 0)
                 {
@@ -252,6 +246,8 @@ namespace app
                         Argument = vector,
                     };
 
+                    Console.WriteLine($"App = {app.Force()}");
+
                     var t0 = (Pair)app.Force();
                     flag = ((Integer) t0.First.Force()).Val;
                     var t1 = (Pair)t0.Second.Force();
@@ -261,13 +257,13 @@ namespace app
 
                     Console.WriteLine("\n\n\n\n\n\n");
                     Console.WriteLine($"Flag = {flag}");
-                    Console.WriteLine(state);
-                    Console.WriteLine(data);
+                    Console.WriteLine($"State = {state}");
+                    Console.WriteLine($"Data = {data}");
 
                     if (flag != 0)
                     {
                         var reply = Sender.Send(data).Result;
-                        Console.WriteLine(reply);
+                        Console.WriteLine($"Reply = {reply}");
                         vector = reply;
                     }
                 }

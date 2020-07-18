@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 #nullable enable
@@ -40,6 +42,13 @@ namespace app
                 },
                 Argument = Second,
             };
+    }
+
+    public static class ValueExtensions
+    {
+        public static Value GetFirst(this Value pair) => ((Pair) pair.Force()).First.Force();
+        public static Value GetSecond(this Value pair) => ((Pair) pair.Force()).Second.Force();
+        public static long GetInt(this Value integer) => ((Integer) integer.Force()).Val;
     }
 
     public class Variable : Value
@@ -83,36 +92,45 @@ namespace app
     // A very hacky way to represent board.
     public class Board : Value
     {
-        public bool[,] Pixels { get; set; } = new bool[20, 20];
+        public HashSet<(int X, int Y)> Pixels { get; set; } = new HashSet<(int, int)>();
 
         public Board(Value val)
         {
             while (val.Force() != Value.Nil)
             {
-                var v = (Pair) val.Force();
-                var point = (Pair) v.First.Force();
+                var point = val.GetFirst();
                     
-                var x = 10 + ((Integer) point.First.Force()).Val;
-                var y = 10 + ((Integer) point.Second.Force()).Val;
+                var x = (int)point.GetFirst().GetInt();
+                var y = (int)point.GetSecond().GetInt();
+                Pixels.Add((x, y));
 
-                if (y >= 0 && x >= 0 && y < Pixels.GetLength(0) && x < Pixels.GetLength(1))
-                {
-                    Pixels[y, x] = true;
-                }
-
-                val = v.Second.Force();
+                val = val.GetSecond();
             }
         }
 
         public override string ToString()
         {
-            var sb = new StringBuilder(30 * 30);
-            for(var i = 0; i < Pixels.GetLength(0); i++)
+            if (Pixels.Count == 0)
             {
-                for(var j = 0; j < Pixels.GetLength(1); j++)
-                    sb.Append(Pixels[i, j] ? "#" : ".");
+                return "<empty-board>";
+            }
+
+            var minX = Pixels.Min(it => it.X) - 1;
+            var minY = Pixels.Min(it => it.Y) - 1;
+            var maxX = Pixels.Max(it => it.X) + 2;
+            var maxY = Pixels.Max(it => it.Y) + 2;
+
+            var sb = new StringBuilder();
+            for(var y = minY; y < maxY; ++y)
+            {
+                for (var x = minX; x < maxX; ++x)
+                {
+                    sb.Append(Pixels.Contains((x, y)) ? "#" : ".");
+                }
+
                 sb.Append("\n");
             }
+
             return sb.ToString();
         }
     }

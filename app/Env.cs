@@ -40,8 +40,13 @@ namespace app
             return result;
         }
 
-        public Value Eval(string expression)
+        public Value Eval(string expression, params Value[] args)
         {
+            for (var i = 0; i < args.Length; ++i)
+            {
+                Globals["$" + (i + 1).ToString()] = args[i];
+            }
+
             var tokens = Tokenize(expression);
             return Parse(tokens, 0).Force();
         }
