@@ -95,7 +95,8 @@ namespace app
                 var y = ((Integer) point.Second.Force()).Val;
                 Pixels[x, y] = true;
                 
-                val = v.Second;
+                val = v.Second.Force();
+                Console.WriteLine(val);
             }
         }
 
