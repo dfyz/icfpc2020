@@ -8,7 +8,7 @@ namespace app
         {
             var programText = File.ReadAllText("../../../../galaxy.txt");
             var env = Env.Load(programText);
-            var galaxy = env.Eval("galaxy");
+            var galaxy = env.Eval("ap ap galaxy nil ap ap vec 0 0");
 
             return 0;
         }
