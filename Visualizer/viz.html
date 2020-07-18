@@ -7,8 +7,9 @@
       <div style='margin-bottom: 15px'>
         <span id="back" style='border: 2px solid black; margin: 3px; background-color: #ccc'>Back</span>
         Coords: <span id="coords"></span>
+        Step#: <span id="stateCount"></span>
       </div>
-        <canvas id="canvas" width="1000px" height="1000px"></canvas>
+        <canvas id="canvas" width="900px" height="900px"></canvas>
         <script>
             const url = 'http://localhost:5000/interact';
 
@@ -122,6 +123,9 @@
                     console.log('click ', x, y)
                     zoomTo([x, y]);
                 }
+
+                var stateCount = document.getElementById('stateCount')
+                stateCount.innerHTML = stateHistory.length
             }
 
             zoomTo([0, 0]);
