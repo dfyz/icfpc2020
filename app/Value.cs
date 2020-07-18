@@ -90,11 +90,12 @@ namespace app
             {
                 var v = (Pair) val;
                 var point = (Pair) v.First.Force();
+                    
                 var x = ((Integer) point.First.Force()).Val;
-                var y = ((Integer) ((Pair)point.Second.Force()).First.Force()).Val;
+                var y = ((Integer) point.Second.Force()).Val;
                 Pixels[x, y] = true;
                 
-                val = point.Second;
+                val = v.Second;
             }
         }
 
