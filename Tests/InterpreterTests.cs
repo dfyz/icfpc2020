@@ -9,7 +9,8 @@ namespace Test
     public class InterpreterTests
     {
         [Fact]
-        public void TestAdd() {
+        public void TestAdd()
+        {
             EvalAssert("3", "ap ap add 1 2");
             EvalAssert("3", "ap ap add 2 1");
             EvalAssert("1", "ap ap add 0 1");
@@ -18,7 +19,8 @@ namespace Test
         }
 
         [Fact]
-        public void TestAp() {
+        public void TestAp()
+        {
             EvalAssert("2", "ap inc ap inc 0");
             EvalAssert("3", "ap inc ap inc ap inc 0");
             EvalAssert("14", "ap ap mul 2 ap ap add 3 4");
@@ -74,7 +76,8 @@ namespace Test
         }
 
         [Fact]
-        public void TestDiv() {
+        public void TestDiv()
+        {
             EvalAssert("2", "ap ap div 4 2");
             EvalAssert("1", "ap ap div 4 3");
             EvalAssert("1", "ap ap div 4 4");
@@ -197,6 +200,22 @@ namespace Test
             EvalAssert("(0 (1 (2 (5 nil))))","( 0 , 1 , 2 , 5 )");
         }
 
+        [Fact]
+        public void TestS()
+        {
+            EvalAssert("3", "ap ap ap s add inc 1");
+            EvalAssert("42", "ap ap ap s mul ap add 1 6");
+        }
+
+        [Fact]
+        public void TestT()
+        {
+            EvalAssert("42", "ap ap t x0 x1", "x0 = 42", "x1 = nil");
+            EvalAssert("1", "ap ap t 1 5");
+            EvalAssert("t", "ap ap t t i");
+            EvalAssert("t", "ap ap t t ap inc 5");
+            EvalAssert("6", "ap ap t ap inc 5 t");
+        }
         
         [Fact]
         public void TestCheckerBoard()
