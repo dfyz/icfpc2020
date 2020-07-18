@@ -74,7 +74,7 @@ namespace app
                     "car" => Builtins.Car.Instance,
                     "cdr" => Builtins.Cdr.Instance,
                     "eq" => Builtins.Eq.Instance,
-                    "lt" => Builtins.Eq.Instance,
+                    "lt" => Builtins.Lt.Instance,
                     "mul" => Builtins.Mul.Instance,
                     "div" => Builtins.Div.Instance,
                     "add" => Builtins.Add.Instance,
@@ -86,7 +86,7 @@ namespace app
                         new Integer { Val = numberValue },
                     "(" => ParseList(),
                     string variable =>
-                        // everything else is a varw
+                        // everything else is a variable
                         new Variable
                         {
                             Env = this,
