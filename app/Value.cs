@@ -227,6 +227,8 @@ namespace app
         public class I : Func1Value<I>
         {
             public override Value Apply(Value x0) => x0;
+
+            public override string ToString() => "i";
         }
 
         // t, true, K-combinator
@@ -290,6 +292,8 @@ namespace app
         {
             protected override Value Apply(Value x0, Value x1) =>
                 new Integer { Val = checked(((Integer) x0.Force()).Val + ((Integer) x1.Force()).Val) };
+
+            public override string ToString() => "add";
         }
 
         public class Inc : Func1Value<Inc>
