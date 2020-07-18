@@ -137,6 +137,33 @@ namespace Test
         }
 
         [Fact]
+        public void TestLt()
+        {
+            EvalAssert("f", "ap ap lt 0 -1");
+            EvalAssert("f", "ap ap lt 0 0");
+            EvalAssert("t", "ap ap lt 0 1");
+            EvalAssert("t", "ap ap lt 0 2");
+
+            EvalAssert("f", "ap ap lt 1 0");
+            EvalAssert("f", "ap ap lt 1 1");
+            EvalAssert("t", "ap ap lt 1 2");
+            EvalAssert("t", "ap ap lt 1 3");
+
+            EvalAssert("f", "ap ap lt 2 1");
+            EvalAssert("f", "ap ap lt 2 2");
+            EvalAssert("t", "ap ap lt 2 3");
+            EvalAssert("t", "ap ap lt 2 4");
+
+            EvalAssert("t", "ap ap lt 19 20");
+            EvalAssert("f", "ap ap lt 20 20");
+            EvalAssert("f", "ap ap lt 21 20");
+
+            EvalAssert("f", "ap ap lt -19 -20");
+            EvalAssert("f", "ap ap lt -20 -20");
+            EvalAssert("t", "ap ap lt -21 -20");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");

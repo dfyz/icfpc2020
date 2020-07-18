@@ -74,7 +74,7 @@ namespace app
                     "car" => Builtins.Car.Instance,
                     "cdr" => Builtins.Cdr.Instance,
                     "eq" => Builtins.Eq.Instance,
-                    "lt" => Builtins.Eq.Instance,
+                    "lt" => Builtins.Lt.Instance,
                     "mul" => Builtins.Mul.Instance,
                     "div" => Builtins.Div.Instance,
                     "add" => Builtins.Add.Instance,
