@@ -38,7 +38,7 @@
                 console.log('Zoom to ', nextPoint)
                 const currentState = stateHistory.length > 0
                     ? stateHistory[stateHistory.length - 1][1]
-                    : null;
+                    : '11011000011111011010110011010110000';
 
                 const serverResponse = await getNextBoard(nextPoint, currentState);
                 const pictures = serverResponse["boards"];
