@@ -12,11 +12,13 @@ namespace app
                 programText,
                 "it1 = ap ap galaxy nil ap ap vec 0 0",
                 "data = ap car ap cdr ap cdr it1");
-            var data = env.Eval("data");
-            var galaxy = env.Eval("ap multipledraw data");
+            //var data = env.Eval("data");
+            //var galaxy = env.Eval("ap multipledraw data");
 
-            Console.WriteLine(data);
-            Console.WriteLine(galaxy);
+            var result = env.Eval("ap interact galaxy");
+                                                                            
+            Console.WriteLine(result);
+            //Console.WriteLine(galaxy);
 
             return 0;
         }

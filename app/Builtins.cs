@@ -2,6 +2,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 
+using System;
+
 namespace app
 {
     public static class Builtins
@@ -229,11 +231,50 @@ namespace app
         {
             public override Value Apply(Value protocol)
             {
+                long flag = 1;
                 var state = Value.Nil;
-                var data = new Pair
+                Value vector = new Pair
                 {
                     First = new Integer { Val = 0},
                     Second = new Integer { Val = 0 },
+                };
+
+                while (flag != 0)
+                {
+                    var app = new Application
+                    {
+                        Func = new Application
+                        {
+                            Func = protocol,
+                            Argument = state,
+                        },
+                        Argument = vector,
+                    };
+
+                    var t0 = (Pair)app.Force();
+                    flag = ((Integer) t0.First.Force()).Val;
+                    var t1 = (Pair)t0.Second.Force();
+                    state = Modem.Demodulate(Modem.Modulate(t1.First.Force()));
+                    var t2 = (Pair)t1.Second.Force();
+                    var data = t2.First.Force();
+
+                    Console.WriteLine("\n\n\n\n\n\n");
+                    Console.WriteLine($"Flag = {flag}");
+                    Console.WriteLine(state);
+                    Console.WriteLine(data);
+
+                    if (flag != 0)
+                    {
+                        var reply = Sender.Send(data).Result;
+                        Console.WriteLine(reply);
+                        vector = reply;
+                    }
+                }
+
+                return new Pair
+                {
+                    First = state,
+                    Second = vector,
                 };
             }
         }
