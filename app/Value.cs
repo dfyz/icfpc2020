@@ -312,5 +312,29 @@ namespace app
         {
             public override Value Apply(Value x) => new Board(x);
         }
+        
+        public class MultipleDraw : Func1Value<MultipleDraw>
+        {
+            public override Value Apply(Value val)
+            {
+                var head = new Pair();
+                var current = head;
+                
+                while (val.Force() != Value.Nil)
+                {
+                    var v = (Pair) val.Force();
+                    var list = v.First.Force();
+                    
+                    var next = new Pair { First = new Board(list) };
+                    current.Second = next;
+                    current = next;
+                    
+                    val = v.Second.Force();
+                }
+
+                current.Second = Value.Nil;
+                return head.Second;
+            }
+        }
     }
 }

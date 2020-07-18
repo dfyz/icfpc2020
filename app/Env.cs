@@ -81,6 +81,7 @@ namespace app
                     "inc" => Builtins.Inc.Instance,
                     "dec" => Builtins.Dec.Instance,
                     "draw" => Builtins.Draw.Instance,
+                    "multipledraw" => Builtins.MultipleDraw.Instance,
                     string number when long.TryParse(number, out var numberValue) =>
                         new Integer { Val = numberValue },
                     "(" => ParseList(),
