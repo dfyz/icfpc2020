@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace app
 {
@@ -9,10 +10,11 @@ namespace app
     {
         public Dictionary<string, Value> Globals { get; } = new Dictionary<string, Value>();
 
-        public static Env Load(string programText)
+        public static Env Load(string programText, params string[] extra)
         {
             var result = new Env();
             var lines = programText.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+            lines = lines.Concat(extra).ToArray();
 
             // small cheat: put entries for all vars declared in program into globals beforehand
             // this allows us to complain about unknown vars at compile time
