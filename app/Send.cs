@@ -47,7 +47,6 @@ namespace app {
             }
             
             var responseString = await response.Content.ReadAsStringAsync();
-            Console.Write(responseString);
             return Modem.Demodulate(StringToBits(responseString));
         }
     }

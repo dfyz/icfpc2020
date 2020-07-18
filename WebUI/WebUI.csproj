@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="galaxy.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="galaxy.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\app\app.csproj" />
+  </ItemGroup>
+
+
+</Project>
