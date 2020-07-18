@@ -114,13 +114,9 @@ namespace app
 
     public static class Builtins
     {
-        public class Nil : Value
+        public class Nil : Func1Value<Nil>
         {
-            public static Nil Instance { get; } = new Nil();
-
-            private Nil()
-            {
-            }
+            public override Value Apply(Value arg) => T.Instance;
 
             public override string ToString() => "nil";
         }
