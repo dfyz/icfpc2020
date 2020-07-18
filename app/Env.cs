@@ -61,6 +61,7 @@ namespace app
                             Argument = DoParse(),
                         },
                     "cons" => Builtins.Cons.Instance,
+                    "vec" => Builtins.Cons.Instance,
                     "nil" => Builtins.Nil.Instance,
                     "isnil" => Builtins.IsNil.Instance,
                     "neg" => Builtins.Neg.Instance,
