@@ -172,6 +172,16 @@ namespace Test
         }
 
         [Fact]
+        public void TestNeg()
+        {
+            EvalAssert("0", "ap neg 0");
+            EvalAssert("-1", "ap neg 1");
+            EvalAssert("1", "ap neg -1");
+            EvalAssert("-2", "ap neg 2");
+            EvalAssert("2", "ap neg -2");
+        }
+
+        [Fact]
         public void TestList()
         {
             EvalAssert("nil", "( )");
