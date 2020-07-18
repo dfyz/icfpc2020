@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using app;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WebUI.Models;
 
@@ -24,12 +25,14 @@ namespace WebUI.Controllers
             var programText = reader.ReadToEnd();env = Env.Load(programText);
         }
 
+        [EnableCors]
         [HttpGet]
         public string Get()
         {
             return "Hi!";
         }
 
+        [EnableCors]
         [HttpPost]
         public InteractResponse Post(InteractRequest data)
         {
