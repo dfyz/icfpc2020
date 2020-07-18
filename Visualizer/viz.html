@@ -16,6 +16,17 @@
         </div>
 
         <script>
+            // https://gist.github.com/mucar/3898821
+            var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
+                            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+                            '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', 
+                            '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+                            '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', 
+                            '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+                            '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', 
+                            '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+                            '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', 
+                            '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
             const url = 'http://localhost:5000/interact';
 
             // [[zoomedPoint, state, pictures]]
@@ -74,8 +85,8 @@
                 grid.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
                 for (var idx = 0; idx < width * height; ++idx) {
                     const pixel = document.createElement('div');
-                    const x = idx % width;
-                    const y = Math.floor(idx / width);
+                    const x = (idx % width) + minX;
+                    const y = Math.floor(idx / width) + minY;
                     pixel.innerText = `(${x},${y})`;
                     pixels.push(pixel);
                     grid.appendChild(pixel);
@@ -85,12 +96,13 @@
                     };
                 }
 
-                for (const picture of pictures) {
+                for (var idx = 0; idx < pictures.length; ++idx) {
+                    const picture = pictures[idx];
                     for (const [x, y] of picture) {
                         const realX = x - minX;
                         const realY = y - minY;
                         const pixel = pixels[realX + realY * width];
-                        pixel.style.backgroundColor = 'black';
+                        pixel.style.backgroundColor = colorArray[idx];
                     }
                 }
             }
