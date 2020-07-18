@@ -99,7 +99,7 @@ namespace app
             while (val.Force() != Value.Nil)
             {
                 var point = val.GetFirst();
-                    
+
                 var x = (int)point.GetFirst().GetInt();
                 var y = (int)point.GetSecond().GetInt();
                 Pixels.Add((x, y));
@@ -125,15 +125,20 @@ namespace app
             var startX = Math.Min(minX, -maxX);
             var endX = Math.Max(-minX, maxX);
             var startY = Math.Min(minY, -maxY);
-            var endY = Math.Min(-minY, maxY);
+            var endY = Math.Max(-minY, maxY);
 
 
             var sb = new StringBuilder();
+            sb.Append("\n");
             for(var y = startY; y <= endY; ++y)
             {
                 for (var x = startX; x <= endX; ++x)
                 {
-                    sb.Append(Pixels.Contains((x, y)) ? "#" : ".");
+                    sb.Append(
+                        Pixels.Contains((x, y)) ? "#" :
+                        y == startY && x == 0 ? "v" :
+                        y == 0 && x == startX ? ">" :
+                        ".");
                 }
 
                 sb.Append("\n");
