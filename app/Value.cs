@@ -110,20 +110,28 @@ namespace app
 
         public override string ToString()
         {
-            if (Pixels.Count == 0)
+            const int minSize = 5;
+            var (minX, maxX, minY, maxY) = (-minSize, minSize, -minSize, minSize);
+
+            if (Pixels.Count != 0)
             {
-                return "<empty-board>";
+                minX = Math.Min(Pixels.Min(it => it.X) - 1, -minSize);
+                minY = Math.Min(Pixels.Min(it => it.Y) - 1, -minSize);
+                maxX = Math.Max(Pixels.Max(it => it.X) + 1, minSize);
+                maxY = Math.Max(Pixels.Max(it => it.Y) + 1, minSize);
             }
 
-            var minX = Pixels.Min(it => it.X) - 1;
-            var minY = Pixels.Min(it => it.Y) - 1;
-            var maxX = Pixels.Max(it => it.X) + 2;
-            var maxY = Pixels.Max(it => it.Y) + 2;
+            // Center image:
+            var startX = Math.Min(minX, -maxX);
+            var endX = Math.Max(-minX, maxX);
+            var startY = Math.Min(minY, -maxY);
+            var endY = Math.Min(-minY, maxY);
+
 
             var sb = new StringBuilder();
-            for(var y = minY; y < maxY; ++y)
+            for(var y = startY; y <= endY; ++y)
             {
-                for (var x = minX; x < maxX; ++x)
+                for (var x = startX; x <= endX; ++x)
                 {
                     sb.Append(Pixels.Contains((x, y)) ? "#" : ".");
                 }

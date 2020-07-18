@@ -20,10 +20,7 @@ namespace app
             var state = Value.Nil;
             for (var i = 0;; ++i)
             {
-                Console.Write("Enter coords: ");
-                var coords = Console.ReadLine().Split(' ');
-                var x = int.Parse(coords[0]);
-                var y = int.Parse(coords[1]);
+                var (x, y) = EnterCoords();
 
                 var res = env.Eval(
                     "ap ap ap interact galaxy $1 ap ap vec $2 $3",
@@ -32,6 +29,21 @@ namespace app
                     new Integer { Val = y });
                 state = res.GetFirst();
                 Console.WriteLine(env.Eval("ap multipledraw $1", res.GetSecond()));
+            }
+
+            (int, int) EnterCoords()
+            {
+                while (true)
+                {
+                    Console.Write("Enter coords: ");
+                    var coords = Console.ReadLine().Split(' ');
+                    if (coords.Length == 2 &&
+                        int.TryParse(coords[0], out var x) &&
+                        int.TryParse(coords[1], out var y))
+                    {
+                        return (x, y);
+                    }
+                }
             }
         }
 
