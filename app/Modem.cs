@@ -8,7 +8,7 @@ namespace app {
             var bits = new List<bool>();
             while (stack.Count > 0) {
                 var topValue = stack.Pop();
-                switch (topValue) {
+                switch (topValue.Force()) {
                     case Builtins.Nil nil:
                         bits.AddRange(new[] {false, false});
                         break;
@@ -17,8 +17,8 @@ namespace app {
                         break;
                     case Pair pair:
                         bits.AddRange(new[] {true, true});
-                        stack.Push(pair.Second);
-                        stack.Push(pair.First);
+                        stack.Push(pair.Second.Force());
+                        stack.Push(pair.First.Force());
                         break;
                     default:
                         throw new Exception($"can't modulate {topValue}");
