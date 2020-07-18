@@ -333,6 +333,7 @@ namespace app
                 }
 
                 current.Second = Value.Nil;
+                Console.WriteLine(head.Second);
                 return head.Second;
             }
         }
