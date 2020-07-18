@@ -79,6 +79,7 @@ namespace app
                     "add" => Builtins.Add.Instance,
                     "inc" => Builtins.Inc.Instance,
                     "dec" => Builtins.Dec.Instance,
+                    "draw" => Builtins.Draw.Instance,
                     string number when long.TryParse(number, out var numberValue) =>
                         new Integer { Val = numberValue },
                     "(" => ParseList(),
