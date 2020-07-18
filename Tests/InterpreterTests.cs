@@ -119,6 +119,16 @@ namespace Test
         }
 
         [Fact]
+        public void TestI()
+        {
+            EvalAssert("42", "ap i x0", "x0 = 42");
+            EvalAssert("1", "ap i 1");
+            EvalAssert("i", "ap i i");
+            EvalAssert("add", "ap i add");
+            EvalAssert("2", "ap inc' 1", "inc' = ap i ap add 1");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");
