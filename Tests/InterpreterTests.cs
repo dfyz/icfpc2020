@@ -198,12 +198,12 @@ namespace Test
         }
 
         
-        [Fact(Skip="The world is not ready yet")]
+        [Fact]
         public void TestCheckerBoard()
         {
             var env = Env.Load("checkerboard = ap ap s ap ap b s ap ap c ap ap b c ap ap b ap c ap c ap ap s ap ap b s ap ap b ap b ap ap s i i lt eq ap ap s mul i nil ap ap s ap ap b s ap ap b ap b cons ap ap s ap ap b s ap ap b ap b cons ap c div ap c ap ap s ap ap b b ap ap c ap ap b b add neg ap ap b ap s mul div ap ap c ap ap b b checkerboard ap ap c add 2");
-            //var res7 = env.Eval("ap ap checkerboard 7 0");
-            //Assert.Equal("hi", res7.ToString());
+            var res7 = env.Eval("ap ap checkerboard 13 0");
+            Assert.Equal("((0 0) ((0 2) ((0 4) ((0 6) ((0 8) ((0 10) ((0 12) ((1 1) ((1 3) ((1 5) ((1 7) ((1 9) ((1 11) ((2 0) ((2 2) ((2 4) ((2 6) ((2 8) ((2 10) ((2 12) ((3 1) ((3 3) ((3 5) ((3 7) ((3 9) ((3 11) ((4 0) ((4 2) ((4 4) ((4 6) ((4 8) ((4 10) ((4 12) ((5 1) ((5 3) ((5 5) ((5 7) ((5 9) ((5 11) ((6 0) ((6 2) ((6 4) ((6 6) ((6 8) ((6 10) ((6 12) ((7 1) ((7 3) ((7 5) ((7 7) ((7 9) ((7 11) ((8 0) ((8 2) ((8 4) ((8 6) ((8 8) ((8 10) ((8 12) ((9 1) ((9 3) ((9 5) ((9 7) ((9 9) ((9 11) ((10 0) ((10 2) ((10 4) ((10 6) ((10 8) ((10 10) ((10 12) ((11 1) ((11 3) ((11 5) ((11 7) ((11 9) ((11 11) ((12 0) ((12 2) ((12 4) ((12 6) ((12 8) ((12 10) ((12 12) nil)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))", res7.ToString());
         }
 
 
