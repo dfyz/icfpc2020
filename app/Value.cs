@@ -24,12 +24,21 @@ namespace app
         public override string ToString() => Val.ToString();
     }
 
-    public class Pair : Value
+    public class Pair : Builtins.Func1Value<Pair>
     {
         public Value First { get; set; }
         public Value Second { get; set; }
 
         public override string ToString() => $"({First.Force()} {Second.Force()})";
+
+        public override Value Apply(Value x) =>
+            new Application {
+                Func = new Application {
+                    Func = x,
+                    Argument = First,
+                },
+                Argument = Second,
+            };
     }
 
     public class Variable : Value

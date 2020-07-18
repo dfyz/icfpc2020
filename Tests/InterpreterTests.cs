@@ -35,6 +35,59 @@ namespace Test
         }
 
         [Fact]
+        public void TestB()
+        {
+            EvalAssert("42", "ap ap ap b inc dec x0", "x0 = 42");
+        }
+
+        [Fact]
+        public void TestC()
+        {
+            EvalAssert("3", "ap ap ap c add 1 2");
+            EvalAssert("8", "ap ap ap c div 10 88");
+        }
+
+
+        [Fact]
+        public void TestCar()
+        {
+            EvalAssert("42", "ap car ap ap cons x0 x1", "x0 = 42", "x1 = nil");
+
+            EvalAssert("42", "ap car x2", "x2 = ap ap cons 42 nil");
+            EvalAssert("42", "ap x2 t", "x2 = ap ap cons 42 nil");
+        }
+
+        [Fact]
+        public void TestCdr()
+        {
+            EvalAssert("nil", "ap cdr ap ap cons x0 x1", "x0 = 42", "x1 = nil");
+
+            EvalAssert("nil", "ap cdr x2", "x2 = ap ap cons 42 nil");
+            EvalAssert("nil", "ap x2 f", "x2 = ap ap cons 42 nil");
+        }
+
+        [Fact]
+        public void TestCons()
+        {
+            EvalAssert("42", "ap ap ap cons 42 nil t");
+            EvalAssert("nil", "ap ap ap cons 42 nil f");
+        }
+
+        [Fact]
+        public void TestDiv() {
+            EvalAssert("2", "ap ap div 4 2");
+            EvalAssert("1", "ap ap div 4 3");
+            EvalAssert("1", "ap ap div 4 4");
+            EvalAssert("0", "ap ap div 4 5");
+            EvalAssert("2", "ap ap div 5 2");
+            EvalAssert("-3", "ap ap div 6 -2");
+            EvalAssert("-1", "ap ap div 5 -3");
+            EvalAssert("-1", "ap ap div -5 3");
+            EvalAssert("1", "ap ap div -5 -3");
+            EvalAssert("12345678", "ap ap div x0 1", "x0 = 12345678");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");
