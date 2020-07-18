@@ -44,6 +44,36 @@ namespace app
             };
     }
 
+    public class ListBuilder
+    {
+        private readonly Pair head;
+        private Pair current;
+        private int count;
+
+        public ListBuilder()
+        {
+            head = new Pair();
+            current = head;
+            count = 0;
+        }
+
+        public int Count => count;
+
+        public void Add(Value val)
+        {
+            var next = new Pair { First = val };
+            current.Second = next;
+            current = next;
+            ++count;
+        }
+
+        public Value Get()
+        {
+            current.Second = Value.Nil;
+            return head.Second;
+        }
+    }
+
     public static class ValueExtensions
     {
         public static Value GetFirst(this Value pair) => ((Pair) pair.Force()).First.Force();
@@ -92,10 +122,12 @@ namespace app
     // A very hacky way to represent board.
     public class Board : Value
     {
+        public string Label { get; }
         public HashSet<(int X, int Y)> Pixels { get; set; } = new HashSet<(int, int)>();
 
-        public Board(Value val)
+        public Board(Value val, string? label = null)
         {
+            Label = label;
             while (val.Force() != Value.Nil)
             {
                 var point = val.GetFirst();
@@ -130,6 +162,11 @@ namespace app
 
             var sb = new StringBuilder();
             sb.Append("\n");
+            if (Label != null)
+            {
+                sb.Append($"{Label}\n");
+            }
+
             for(var y = startY; y <= endY; ++y)
             {
                 for (var x = startX; x <= endX; ++x)

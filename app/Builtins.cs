@@ -202,28 +202,29 @@ namespace app
         {
             public override Value Apply(Value x) => new Board(x);
         }
-        
+
         public class MultipleDraw : Func1Value<MultipleDraw>
         {
             public override Value Apply(Value val)
             {
-                var head = new Pair();
-                var current = head;
-                
+                var union = new Board(Value.Nil, "UNION");
+                var result = new ListBuilder();
+
                 while (val.Force() != Value.Nil)
                 {
-                    var v = (Pair) val.Force();
-                    var list = v.First.Force();
-                    
-                    var next = new Pair { First = new Board(list) };
-                    current.Second = next;
-                    current = next;
-                    
-                    val = v.Second.Force();
+                    var board = new Board(val.GetFirst());
+                    union.Pixels.UnionWith(board.Pixels);
+                    result.Add(board);
+
+                    val = val.GetSecond();
                 }
 
-                current.Second = Value.Nil;
-                return head.Second;
+                if (result.Count > 1)
+                {
+                    result.Add(union);
+                }
+
+                return result.Get();
             }
         }
 

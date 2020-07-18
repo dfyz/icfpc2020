@@ -11,32 +11,80 @@ namespace app
             var env = Env.Load(programText);
 
             // Iterate00(env);
-            Interactive(env);
+            var state = GetToGalaxy(env);
+            Interactive(env, state);
             return 0;
         }
 
-        private static void Interactive(Env env)
+        // iterates start coords to get to galaxy image
+        private static Value GetToGalaxy(Env env)
         {
+            var path = new[]
+            {
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (8, 4),
+                (2, -8),
+                (3, 6),
+                (0, -14),
+                (-4, 10),
+                (9, -3),
+                (-4, 10),
+                (1, 4),
+            };
             var state = Value.Nil;
+            foreach (var (x, y) in path)
+            {
+                state = Zoom(env, state, x, y, false);
+            }
+
+            return state;
+        }
+
+        private static Value Zoom(Env env, Value state, int x, int y, bool print)
+        {
+            var res = env.Eval(
+                "ap ap ap interact galaxy $1 ap ap vec $2 $3",
+                state,
+                new Integer { Val = x },
+                new Integer { Val = y });
+            state = res.GetFirst();
+
+            var data = env.Eval("ap multipledraw $1", res.GetSecond());
+
+            if (print)
+            {
+                Console.WriteLine(data);
+            }
+
+            // Dump to file for easier invistigation of large pictures
+            File.WriteAllText("last.txt", data.ToString());
+
+            return state;
+        }
+
+        private static void Interactive(Env env, Value initState = null)
+        {
+            initState ??= Value.Nil;
+            var state = initState;
             while (true)
             {
                 var coords = EnterCoords();
                 if (coords == null)
                 {
                     Console.WriteLine("\n\nRESTART");
-                    state = Value.Nil;
+                    state = initState;
                     continue;
                 }
 
                 var (x, y) = coords.Value;
-
-                var res = env.Eval(
-                    "ap ap ap interact galaxy $1 ap ap vec $2 $3",
-                    state,
-                    new Integer { Val = x },
-                    new Integer { Val = y });
-                state = res.GetFirst();
-                Console.WriteLine(env.Eval("ap multipledraw $1", res.GetSecond()));
+                state = Zoom(env, state, x, y, true);
             }
 
             static (int, int)? EnterCoords()
