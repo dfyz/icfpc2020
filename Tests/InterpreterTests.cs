@@ -129,6 +129,14 @@ namespace Test
         }
 
         [Fact]
+        public void TestIsNil()
+        {
+            EvalAssert("t", "ap isnil nil");
+            EvalAssert("f", "ap isnil ap ap cons x0 x1", "x0 = 42", "x1 = nil");
+            EvalAssert("t", "ap isnil ap cdr ap ap cons 42 nil");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");
