@@ -86,9 +86,9 @@ namespace app
 
         public Board(Value val)
         {
-            while(val != Value.Nil)
+            while (val.Force() != Value.Nil)
             {
-                var v = (Pair) val;
+                var v = (Pair) val.Force();
                 var point = (Pair) v.First.Force();
                     
                 var x = ((Integer) point.First.Force()).Val;
@@ -117,7 +117,7 @@ namespace app
     {
         public class Nil : Value
         {
-            public static Nil Instance => new Nil();
+            public static Nil Instance { get; } = new Nil();
 
             private Nil()
             {
@@ -137,13 +137,13 @@ namespace app
         public abstract class Func1Value<TFunc> : FuncValue
             where TFunc : Func1Value<TFunc>, new()
         {
-            public static TFunc Instance => new TFunc();
+            public static TFunc Instance { get; } = new TFunc();
         }
 
         public abstract class Func2Value<TFunc> : FuncValue
             where TFunc : Func2Value<TFunc>, new()
         {
-            public static TFunc Instance => new TFunc();
+            public static TFunc Instance { get; } = new TFunc();
 
             public override Value Apply(Value x0) => new Closure1 { X0 = x0 };
 
@@ -159,7 +159,7 @@ namespace app
         public abstract class Func3Value<TFunc> : FuncValue
             where TFunc : Func3Value<TFunc>, new()
         {
-            public static TFunc Instance => new TFunc();
+            public static TFunc Instance { get; } = new TFunc();
 
             public override Value Apply(Value x0) => new Closure1 { X0 = x0 };
 
