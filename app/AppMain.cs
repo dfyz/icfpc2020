@@ -9,7 +9,7 @@ namespace app
         {
             var programText = File.ReadAllText("../../../../galaxy.txt");
             var env = Env.Load(programText);
-            
+
             // Iterate00(env);
             Interactive(env);
             return 0;
@@ -18,9 +18,17 @@ namespace app
         private static void Interactive(Env env)
         {
             var state = Value.Nil;
-            for (var i = 0;; ++i)
+            while (true)
             {
-                var (x, y) = EnterCoords();
+                var coords = EnterCoords();
+                if (coords == null)
+                {
+                    Console.WriteLine("\n\nRESTART");
+                    state = Value.Nil;
+                    continue;
+                }
+
+                var (x, y) = coords.Value;
 
                 var res = env.Eval(
                     "ap ap ap interact galaxy $1 ap ap vec $2 $3",
@@ -31,17 +39,22 @@ namespace app
                 Console.WriteLine(env.Eval("ap multipledraw $1", res.GetSecond()));
             }
 
-            (int, int) EnterCoords()
+            static (int, int)? EnterCoords()
             {
                 while (true)
                 {
-                    Console.Write("Enter coords: ");
+                    Console.Write("Enter coords (r - restart): ");
                     var coords = Console.ReadLine().Split(' ');
                     if (coords.Length == 2 &&
                         int.TryParse(coords[0], out var x) &&
                         int.TryParse(coords[1], out var y))
                     {
                         return (x, y);
+                    }
+
+                    if (coords.Length == 1 && coords[0] == "r")
+                    {
+                        return null;
                     }
                 }
             }
