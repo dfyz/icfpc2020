@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace app
 {
@@ -13,6 +14,9 @@ namespace app
                 "data = ap car ap cdr ap cdr it1");
             var data = env.Eval("data");
             var galaxy = env.Eval("ap multipledraw data");
+
+            Console.WriteLine(data);
+            Console.WriteLine(galaxy);
 
             return 0;
         }

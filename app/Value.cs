@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 
 #nullable enable
@@ -91,10 +92,14 @@ namespace app
                 var v = (Pair) val.Force();
                 var point = (Pair) v.First.Force();
                     
-                var x = ((Integer) point.First.Force()).Val;
-                var y = ((Integer) point.Second.Force()).Val;
-                Pixels[y, x] = true;
-                
+                var x = 10 + ((Integer) point.First.Force()).Val;
+                var y = 10 + ((Integer) point.Second.Force()).Val;
+
+                if (y >= 0 && x >= 0 && y < Pixels.GetLength(0) && x < Pixels.GetLength(1))
+                {
+                    Pixels[y, x] = true;
+                }
+
                 val = v.Second.Force();
             }
         }
