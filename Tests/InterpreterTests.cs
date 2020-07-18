@@ -88,6 +88,37 @@ namespace Test
         }
 
         [Fact]
+        public void TestEq()
+        {
+            EvalAssert("t", "ap ap eq x0 x0", "x0 = 42");
+            EvalAssert("f", "ap ap eq 0 -2");
+            EvalAssert("f", "ap ap eq 0 -1");
+            EvalAssert("t", "ap ap eq 0 0");
+            EvalAssert("f", "ap ap eq 0 1");
+            EvalAssert("f", "ap ap eq 0 2");
+
+            EvalAssert("f", "ap ap eq 1 -1");
+            EvalAssert("f", "ap ap eq 1 0");
+            EvalAssert("t", "ap ap eq 1 1");
+            EvalAssert("f", "ap ap eq 1 2");
+            EvalAssert("f", "ap ap eq 1 3");
+
+            EvalAssert("f", "ap ap eq 2 0");
+            EvalAssert("f", "ap ap eq 2 1");
+            EvalAssert("t", "ap ap eq 2 2");
+            EvalAssert("f", "ap ap eq 2 3");
+            EvalAssert("f", "ap ap eq 2 4");
+
+            EvalAssert("f", "ap ap eq 19 20");
+            EvalAssert("t", "ap ap eq 20 20");
+            EvalAssert("f", "ap ap eq 21 20");
+
+            EvalAssert("f", "ap ap eq -19 -20");
+            EvalAssert("t", "ap ap eq -20 -20");
+            EvalAssert("f", "ap ap eq -21 -20");
+        }
+
+        [Fact]
         public void TestMul()
         {
             EvalAssert("8", "ap ap mul 4 2");

@@ -205,12 +205,16 @@ namespace app
         public class T : Func2Value<T>
         {
             protected override Value Apply(Value x0, Value x1) => x0;
+
+            public override string ToString() => "t";
         }
 
         // f, false
         public class F : Func2Value<F>
         {
             protected override Value Apply(Value x0, Value x1) => x1;
+
+            public override string ToString() => "f";
         }
 
         public class Car : Func1Value<Car>
