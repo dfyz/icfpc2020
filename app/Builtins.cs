@@ -233,6 +233,7 @@ namespace app
             {
                 long flag = 1;
                 var state = Value.Nil;
+                Value data = Value.Nil;
                 Value vector = new Pair
                 {
                     First = new Integer { Val = 0},
@@ -256,7 +257,7 @@ namespace app
                     var t1 = (Pair)t0.Second.Force();
                     state = Modem.Demodulate(Modem.Modulate(t1.First.Force()));
                     var t2 = (Pair)t1.Second.Force();
-                    var data = t2.First.Force();
+                    data = t2.First.Force();
 
                     Console.WriteLine("\n\n\n\n\n\n");
                     Console.WriteLine($"Flag = {flag}");
@@ -274,7 +275,7 @@ namespace app
                 return new Pair
                 {
                     First = state,
-                    Second = vector,
+                    Second = data,
                 };
             }
         }
