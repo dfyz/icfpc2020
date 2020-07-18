@@ -182,6 +182,12 @@ namespace Test
         }
 
         [Fact]
+        public void TestNil()
+        {
+            EvalAssert("t", "ap nil x0", "x0 = 42");
+        }
+
+        [Fact]
         public void TestList()
         {
             EvalAssert("nil", "( )");
