@@ -93,10 +93,9 @@ namespace app
                     
                 var x = ((Integer) point.First.Force()).Val;
                 var y = ((Integer) point.Second.Force()).Val;
-                Pixels[x, y] = true;
+                Pixels[y, x] = true;
                 
                 val = v.Second.Force();
-                Console.WriteLine(val);
             }
         }
 
@@ -107,7 +106,7 @@ namespace app
             {
                 for(var j = 0; j < Pixels.GetLength(1); j++)
                     sb.Append(Pixels[i, j] ? "#" : ".");
-                sb.Append("\n");
+                sb.Append(Environment.NewLine);
             }
             return sb.ToString();
         }
