@@ -106,7 +106,7 @@ namespace app
             {
                 for(var j = 0; j < Pixels.GetLength(1); j++)
                     sb.Append(Pixels[i, j] ? "#" : ".");
-                sb.Append(Environment.NewLine);
+                sb.Append("\n");
             }
             return sb.ToString();
         }
