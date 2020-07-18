@@ -2,32 +2,17 @@
     <head>
         <title>Galaxy brain</title>
         <meta charset="UTF-8">
-        <style>
-            #grid {
-                display: grid;
-            }
-            #grid > div {
-                text-align: center;
-            }
-        </style>
     </head>
     <body>
-        <div id="grid">
-        </div>
-
+      <div style='margin-bottom: 15px'>
+        <span id="back" style='border: 2px solid black; margin: 3px; background-color: #ccc'>Back</span>
+        Coords: <span id="coords"></span>
+      </div>
+        <canvas id="canvas" width="1000px" height="1000px"></canvas>
         <script>
-            // https://gist.github.com/mucar/3898821
-            var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
-                            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-                            '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', 
-                            '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-                            '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', 
-                            '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
-                            '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', 
-                            '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
-                            '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', 
-                            '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
             const url = 'http://localhost:5000/interact';
+
+            const maxPixelSize = 20;
 
             // [[zoomedPoint, state, pictures]]
             var stateHistory = [];
@@ -49,6 +34,7 @@
             }
 
             async function zoomTo(nextPoint) {
+                console.log('Zoom to ', nextPoint)
                 const currentState = stateHistory.length > 0
                     ? stateHistory[stateHistory.length - 1][1]
                     : null;
@@ -60,7 +46,15 @@
                 drawBoard(pictures);
             }
 
-            const grid = document.getElementById('grid');
+            document.getElementById('back').onclick = function() {
+                stateHistory.pop();
+                const prev = stateHistory[stateHistory.length - 1]
+                drawBoard(prev[2])
+            }
+
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
 
             function drawBoard(pictures) {
                 var minX = Infinity;
@@ -73,37 +67,60 @@
                         minX = Math.min(minX, x);
                         maxX = Math.max(maxX, x);
                         minY = Math.min(minY, y);
-                        maxY = Math.max(maxY, y);;
+                        maxY = Math.max(maxY, y);
                     }
                 }
 
                 const width = maxX - minX + 1;
                 const height = maxY - minY + 1;
-                var pixels = [];
 
-                grid.innerHTML = '';
-                grid.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
-                for (var idx = 0; idx < width * height; ++idx) {
-                    const pixel = document.createElement('div');
-                    const x = (idx % width) + minX;
-                    const y = Math.floor(idx / width) + minY;
-                    pixel.innerText = `(${x},${y})`;
-                    pixels.push(pixel);
-                    grid.appendChild(pixel);
-
-                    pixel.onclick = function() {
-                        zoomTo([x, y]);
-                    };
-                }
-
+                const img = ctx.createImageData(width, height);
+                var opacity = 255;
                 for (var idx = 0; idx < pictures.length; ++idx) {
                     const picture = pictures[idx];
                     for (const [x, y] of picture) {
                         const realX = x - minX;
                         const realY = y - minY;
-                        const pixel = pixels[realX + realY * width];
-                        pixel.style.backgroundColor = colorArray[idx];
+                        const baseIndex = (realX + (realY * width)) * 4;
+                        img.data[baseIndex + (idx % 3)] = (255 / (1 + idx / 3)) | 0;
+                        img.data[baseIndex + 3] = 255;
                     }
+                }
+
+                var pixelSize = Math.min(canvas.width / width, canvas.height / height)
+                pixelSize = Math.min(maxPixelSize, pixelSize) | 0
+
+                const tmpCanvas = document.createElement("canvas");
+                tmpCanvas.setAttribute("width", width);
+                tmpCanvas.setAttribute("height", height);
+                tmpCanvas.getContext('2d').putImageData(img, 0, 0);
+
+                const redraw = function()
+                {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.save();
+                    ctx.scale(pixelSize, pixelSize);
+                    ctx.drawImage(tmpCanvas, 0, 0);
+                    ctx.restore();
+                }
+
+                redraw();
+
+                canvas.onmousemove = function(event) {
+                    const rect = canvas.getBoundingClientRect();
+                    const x = (minX + Math.floor((event.clientX - rect.left) / pixelSize)) | 0;
+                    const y = (minY + Math.floor((event.clientY - rect.top) / pixelSize)) | 0;
+                    const coords = document.getElementById('coords')
+
+                    coords.innerHTML = '(' + x + ', ' + y + ')'
+                }
+
+                canvas.onclick = function(event) {
+                    const rect = canvas.getBoundingClientRect();
+                    const x = (minX + Math.floor((event.clientX - rect.left) / pixelSize)) | 0;
+                    const y = (minY + Math.floor((event.clientY - rect.top) / pixelSize)) | 0;
+                    console.log('click ', x, y)
+                    zoomTo([x, y]);
                 }
             }
 
