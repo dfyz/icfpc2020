@@ -227,6 +227,14 @@ namespace app
                 return result.Get();
             }
         }
+        
+        public class Send : Func1Value<Send>
+        {
+            public override Value Apply(Value arg)
+            {
+                return Sender.Send(arg.Force()).Result;
+            }
+        }
 
         public class Interact : Func3Value<Interact>
         {
