@@ -76,16 +76,19 @@
                 const height = maxY - minY + 1;
 
                 const img = ctx.createImageData(width, height);
-                var opacity = 255;
+                var opacity = 1.0;
                 for (var idx = 0; idx < pictures.length; ++idx) {
                     const picture = pictures[idx];
                     for (const [x, y] of picture) {
                         const realX = x - minX;
                         const realY = y - minY;
                         const baseIndex = (realX + (realY * width)) * 4;
-                        img.data[baseIndex + (idx % 3)] = (255 / (1 + idx / 3)) | 0;
-                        img.data[baseIndex + 3] = 255;
+                        for (var pIdx = 0; pIdx < 4; ++pIdx) {
+                            const oldVal = img.data[baseIndex + pIdx];
+                            img.data[baseIndex + pIdx] = opacity * 255 + (1.0 - opacity) * oldVal;
+                        }
                     }
+                    opacity /= 1.2;
                 }
 
                 var pixelSize = Math.min(canvas.width / width, canvas.height / height)
@@ -98,7 +101,8 @@
 
                 const redraw = function()
                 {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'black';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.save();
                     ctx.scale(pixelSize, pixelSize);
                     ctx.drawImage(tmpCanvas, 0, 0);
