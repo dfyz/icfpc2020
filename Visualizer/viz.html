@@ -27,6 +27,13 @@
             // [[zoomedPoint, state, pictures]]
             var stateHistory = [];
 
+            const knownStates = [
+                // galaxy
+                '11011000011111011010110011010110000',
+                // tutorial level #5
+                '11011001101111011001011101101000110111111111111111110001101000111100111101010011101000100100110111011000010010100100011010110110110111010110011001101100100111101011001111111101100001110110000111110111000010000011100101011011110100101111011100010000011010110101101100001001101011011100100000011011000010011000011111101011010111101001110000100001111010010111101100110110101101100100110110000100110111000111100110111001000000110110000100110000000011110111000010000110101111011110001000000000110110000111011100100000000110011000011001100001101101000110000',
+            ];
+
             async function getNextBoard(point, state) {
                 const data = {
                     'point': point,
@@ -47,7 +54,8 @@
                 console.log('Zoom to ', nextPoint)
                 const currentState = stateHistory.length > 0
                     ? stateHistory[stateHistory.length - 1][1]
-                    : '11011000011111011010110011010110000';
+                    // Override this to start from a different level.
+                    : knownStates[0];
 
                 const serverResponse = await getNextBoard(nextPoint, currentState);
                 const pictures = serverResponse["boards"];
