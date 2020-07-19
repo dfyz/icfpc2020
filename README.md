@@ -27,3 +27,23 @@ I have no idea what this is about, but if you squint hard enough it somewhat loo
 A 2x5 table filled with numbers. The label for the first row is `C + H + V + D`, the second row label is `R` (see the description of the tutorials for more details). The column labels might be the distance to the space station (or something else entirely, I'm not really sure).
 
 ![Game rules](/game_rules.png)
+
+## Tutorial levels from the Battleground
+
+We basically fly a small ship and dock to space stations. You are presented with a cockpit when you click on the ship.
+
+![Cockpit](/cockpit.png)
+
+![Cockpit legend](/cockpit_legend.png)
+
+Cockpit buttons control the ship:
+  * `T`: the **t**hrust control panel. Choose one of 8 possible directions to engage the thruster and accelerate.
+  * `R`: **р**уль for docking (I should have used `D` for this one, but oh well). Pressing this activates docking on your next turn (you'd better be near a space station).
+
+Cockpit counters show confusing numbers:
+  * `A`: always zero in all tutorial levels we have unlocked. Purpose unclear.
+  * `B`: Purpose unclear.
+  * `C`: the **c**heckerboard counter (see the icon). Has something to do with thruster.
+  * `H`: the **h**orizontal counter. Ditto.
+  * `V`: the **v**ertical counter. Ditto.
+  * `D`: the **d**ot in a square counter. Ditto.
