@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 
-#nullable enable
 
 namespace app
 {
@@ -81,7 +79,7 @@ namespace app
         public static long GetInt(this Value integer) => ((Integer) integer.Force()).Val;
     }
 
-    public class Variable : Value
+    public class Symbol : Value
     {
         private Value value;
 

@@ -47,3 +47,35 @@ Cockpit counters show confusing numbers:
   * `H`: the **h**orizontal counter. Ditto.
   * `V`: the **v**ertical counter. Ditto.
   * `D`: the **d**ot in a square counter. Ditto.
+
+### Tutorial level #1
+
+Press the galaxy button repeatedly to move the ship.
+
+![#1](/tutorial1.png)
+
+
+### Tutorial level #2
+
+Dock to the space station.
+
+![#2](/tutorial2.png)
+
+
+### Tutorial level #3
+
+Use the thruster to navigate and dock to the space station.
+
+![#3](/tutorial3.png)
+
+### Tutorial level #4
+
+Accelerate as fast as possible to make it to the space station in time (all levels have a time limit).
+
+![#4](/tutorial4.png)
+
+### Tutorial level #5
+
+This level supposedly should have something to do with `V` (the vertical counter). Needs further investigation.
+
+![#5](/tutorial5.png)

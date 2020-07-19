@@ -96,7 +96,7 @@ namespace app
                     "(" => ParseList(),
                     string variable =>
                         // everything else is a variable
-                        new Variable
+                        new Symbol
                         {
                             Env = this,
                             Name = Globals.ContainsKey(variable)
