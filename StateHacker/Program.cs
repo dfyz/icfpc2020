@@ -53,7 +53,7 @@ namespace app
                     num *= sign;
                     stack.Push(new Integer{Val = num});
                 } else if (ch == 'n') {
-                    if (ch + 2 >= data.Length || data[idx + 1] != 'i' || data[idx + 2] != 'l') {
+                    if (idx + 2 >= data.Length || data[idx + 1] != 'i' || data[idx + 2] != 'l') {
                         throw new Exception("nil expected");
                     }
                     stack.Push(Builtins.Nil.Instance);
