@@ -2,6 +2,14 @@
     <head>
         <title>Galaxy brain</title>
         <meta charset="UTF-8">
+        <head>
+            <style>
+                pre {
+                    word-wrap: break-word;
+                    white-space: pre-wrap;
+                }
+            </style>
+        </head>
     </head>
     <body>
       <div style='margin-bottom: 15px'>
@@ -10,8 +18,9 @@
         Step#: <span id="stateCount"></span>
       </div>
         <canvas id="canvas" width="900px" height="900px"></canvas>
+        <div style="width: 900px">State: <pre id="state"></div></div>
         <script>
-            const url = 'http://localhost:5000/interact';
+            const url = 'http://localhost:31337/interact';
 
             const maxPixelSize = 20;
 
@@ -42,9 +51,11 @@
 
                 const serverResponse = await getNextBoard(nextPoint, currentState);
                 const pictures = serverResponse["boards"];
-                stateHistory.push([nextPoint, serverResponse['state'], pictures]);
+                const nextState = serverResponse['state'];
+                stateHistory.push([nextPoint, nextState, pictures]);
 
                 drawBoard(pictures);
+                document.getElementById('state').innerText = nextState;
             }
 
             document.getElementById('back').onclick = function() {
