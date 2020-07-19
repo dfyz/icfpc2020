@@ -107,42 +107,13 @@ namespace app
 
         public override Value Force()
         {
-            if (this.result == null)
+            if (result == null)
             {
-                var ap = this;
-                StackNode stack = null;
-                while (ap.result == null)
-                {
-                    var func = (FuncValue) ap.Func.Force();
-                    ap.result = func.Apply(ap.Argument);
-                    if (ap.result is Application nextAp)
-                    {
-                        stack = new StackNode {Prev = stack, Ap = ap};
-                        ap = nextAp;
-                    }
-                    else
-                    {
-                        // This will trigger recursive call anyway...
-                        ap.result = ap.result.Force();
-                    }
-                    
-                }
-
-                // Copy forced result into the whole chain call
-                while (stack != null)
-                {
-                    stack.Ap.result = ap.result;
-                    stack = stack.Prev;
-                }
+                var func = (FuncValue)Func.Force();
+                result = func.Apply(Argument).Force();
             }
 
-            return this.result;
-        }
-
-        private class StackNode
-        {
-            public StackNode Prev { get; set; }
-            public Application Ap { get; set; }
+            return result;
         }
     }
 
