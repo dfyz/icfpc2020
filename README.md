@@ -24,6 +24,6 @@ I have no idea what this is about, but if you squint hard enough it somewhat loo
 
 ## Game rules
 
-A 2x5 table filled with numbers. The label for the first row is `C + H + V + D`, the second row label is `R` (see the description of the tutorials for more details). The column labels might be the distance to the space station (or something else entirely I'm not really sure).
+A 2x5 table filled with numbers. The label for the first row is `C + H + V + D`, the second row label is `R` (see the description of the tutorials for more details). The column labels might be the distance to the space station (or something else entirely, I'm not really sure).
 
 ![Game rules](/game_rules.png)
