@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 
-#nullable enable
 
 namespace app
 {
@@ -81,7 +79,7 @@ namespace app
         public static long GetInt(this Value integer) => ((Integer) integer.Force()).Val;
     }
 
-    public class Variable : Value
+    public class Symbol : Value
     {
         private Value value;
 
@@ -109,13 +107,42 @@ namespace app
 
         public override Value Force()
         {
-            if (result == null)
+            if (this.result == null)
             {
-                var func = (FuncValue)Func.Force();
-                result = func.Apply(Argument).Force();
+                var ap = this;
+                StackNode stack = null;
+                while (ap.result == null)
+                {
+                    var func = (FuncValue) ap.Func.Force();
+                    ap.result = func.Apply(ap.Argument);
+                    if (ap.result is Application nextAp)
+                    {
+                        stack = new StackNode {Prev = stack, Ap = ap};
+                        ap = nextAp;
+                    }
+                    else
+                    {
+                        // This will trigger recursive call anyway...
+                        ap.result = ap.result.Force();
+                    }
+                    
+                }
+
+                // Copy forced result into the whole chain call
+                while (stack != null)
+                {
+                    stack.Ap.result = ap.result;
+                    stack = stack.Prev;
+                }
             }
 
-            return result;
+            return this.result;
+        }
+
+        private class StackNode
+        {
+            public StackNode Prev { get; set; }
+            public Application Ap { get; set; }
         }
     }
 
